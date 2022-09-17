@@ -9,16 +9,17 @@ var lineColor =  Color( 0, 0, 0, 1 )
 var distance = floor(window.x/lineLength)
 
 var head 
-var tail
+var meal
+var sumOfBody
 var body = []
 var turn = {Vector2(0,0):"right"}
 
 func _ready():
-	head = get_child(0)
-	tail = get_child(get_child_count()-1)
-	var sumOfBody = get_child_count() - 1
+	meal = get_node("Meal")
+	head = get_node("Body").get_child(0)
+	sumOfBody = get_node("Body").get_child_count() - 1
 	for i in sumOfBody:
-		body.append(get_child(i+1))
+		body.append(get_node("Body").get_child(i+1))
 	
 func _physics_process(delta):
 	if head.move == true:
@@ -45,6 +46,9 @@ func _physics_process(delta):
 			body[b].direction = turn[pos]
 			if b == len(body)-1:
 				turn.erase(pos)
+	
+	if head.rect_position == meal.rect_position:
+		meal.move()
 
 func _draw():
 #	Draw grid
